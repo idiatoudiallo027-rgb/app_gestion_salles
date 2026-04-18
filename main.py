@@ -24,5 +24,11 @@ s= dao.get_salle("12C")
 if s:
     print(f"\nSalle trouvée : {s.description}")
 
+# recuperation de toutes les salles de la base de donnee
+print("\n--- Liste de toutes les salles ---")
+toutes = dao.get_salles()
+for s in toutes:
+    s.afficher_infos()
+
 
 
