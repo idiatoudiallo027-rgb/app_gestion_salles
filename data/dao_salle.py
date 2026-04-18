@@ -18,24 +18,43 @@ class DataSalle:
 
     #creation de la methode insert salle
     def insert_salle(self, salle):
-        connection = self.get_connection()
-        cursor = connection.cursor()
-        query= "INSERT INTO salle (code, description, categorie, capacite) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query, (salle.code, salle.description, salle.categorie, salle.capacite))
-        connection.commit()
-        connection.close()
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
 
-    #ajout de la methode update salle
+            query = "INSERT INTO salle (code, description, categorie, capacite) VALUES (%s, %s, %s, %s)"
+            cursor.execute(query, (salle.code, salle.description, salle.categorie, salle.capacite))
+            conn.commit()
+            conn.close()
+
+            print("la Salle est  ajoutée avec succes ")
+        except Exception as e:
+            print("Erreur :", e)
+
+
+#ajout de la methode update salle--------------------------------------------------------------------
     def update_salle(self, salle):
         conn = self.get_connection()
         cursor = conn.cursor()
+
         query = """
         UPDATE salle
         SET description = %s, categorie = %s, capacite = %s
         WHERE code = %s
         """
+
         cursor.execute(query, (salle.description, salle.categorie, salle.capacite, salle.code))
+
         conn.commit()
         conn.close()
 
+# ajout de la methide delete
+    def delete_salle(self, code):
+        conn = self.get_connection()
+        cursor = conn.cursor()
 
+        query = "DELETE FROM salle WHERE code = %s"
+        cursor.execute(query, (code,))
+
+        conn.commit()
+        conn.close()

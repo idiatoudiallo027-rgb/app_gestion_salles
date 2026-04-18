@@ -6,10 +6,16 @@ conn = dao.get_connection()
 if conn.is_connected():
     print("la connexion a ete effecute avec succe")
 
-#ajouter une salle
-s= Salle("12A","Salle Reunion","Classe",24)
+#ajouter une salle--------------------------------------------------------------------------------
+s= Salle("12C","generale","Classe",24)
+dao.insert_salle(s)
 
-
-# partie update salle
-s.capacite = 35
+# partie update salle----------------------------------------------------------------------------
+s.capacite = 38
 dao.update_salle(s)
+print("mis a jour effectue")
+
+#ajout de la methode delete ----------------------------------------------------------------------
+dao.delete_salle(s)
+
+
