@@ -16,6 +16,8 @@ dao.update_salle(s)
 print("mis a jour effectue")
 
 #ajout de la methode delete ----------------------------------------------------------------------
-dao.delete_salle(s)
+dao.delete_salle("12A")
+print("suppression effectue avec succes")
+
 
 
