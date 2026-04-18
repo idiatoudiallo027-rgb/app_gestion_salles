@@ -9,3 +9,7 @@ if conn.is_connected():
 #ajouter une salle
 s= Salle("12A","Salle Reunion","Classe",24)
 
+
+# partie update salle
+s.capacite = 35
+dao.update_salle(s)

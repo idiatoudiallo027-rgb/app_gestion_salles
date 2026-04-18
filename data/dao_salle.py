@@ -1,5 +1,7 @@
 import json
 import mysql.connector
+
+from models import salle
 from models.salle import Salle
 
 class DataSalle:
@@ -22,5 +24,18 @@ class DataSalle:
         cursor.execute(query, (salle.code, salle.description, salle.categorie, salle.capacite))
         connection.commit()
         connection.close()
+
+    #ajout de la methode update salle
+    def update_salle(self, salle):
+        conn = self.get_connection()
+        cursor = conn.cursor()
+        query = """
+        UPDATE salle
+        SET description = %s, categorie = %s, capacite = %s
+        WHERE code = %s
+        """
+        cursor.execute(query, (salle.description, salle.categorie, salle.capacite, salle.code))
+        conn.commit()
+        conn.close()
 
 
