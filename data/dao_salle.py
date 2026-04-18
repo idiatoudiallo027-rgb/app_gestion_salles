@@ -48,7 +48,7 @@ class DataSalle:
         conn.commit()
         conn.close()
 
-# ajout de la methide delete
+# ajout de la methide delete--------------------------------------------------
     def delete_salle(self, code):
         conn = self.get_connection()
         cursor = conn.cursor()
@@ -58,3 +58,16 @@ class DataSalle:
 
         conn.commit()
         conn.close()
+#rechercher et retourner une salle a partir de son code -----------------------------------------
+    def get_salle(self, code):
+        conn = self.get_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM salle WHERE code = %s"
+        cursor.execute(query, (code,))
+        r = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if r:
+            return Salle(r['code'], r['description'], r['categorie'], r['capacite'])
+        return None

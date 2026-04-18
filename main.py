@@ -19,5 +19,10 @@ print("mis a jour effectue")
 dao.delete_salle("12A")
 print("suppression effectue avec succes")
 
+# rechercher une salle a partir de son code
+s= dao.get_salle("12C")
+if s:
+    print(f"\nSalle trouvée : {s.description}")
+
 
 
