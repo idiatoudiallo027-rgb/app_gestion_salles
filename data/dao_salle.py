@@ -71,3 +71,19 @@ class DataSalle:
         if r:
             return Salle(r['code'], r['description'], r['categorie'], r['capacite'])
         return None
+
+#recuperer toutes les salles presentent dans la base de donnee --------------------------------------
+    def get_salles(self):
+        conn = self.get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM salle")
+        resultats = cursor.fetchall()
+
+        liste_salles = []
+        for r in resultats:
+            s = Salle(r['code'], r['description'], r['categorie'], r['capacite'])
+            liste_salles.append(s)
+
+        cursor.close()
+        conn.close()
+        return liste_salles
