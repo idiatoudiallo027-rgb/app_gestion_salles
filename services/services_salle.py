@@ -17,7 +17,7 @@ class ServiceSalle:
         except Exception as e:
             return False, f"Erreur base de données : {e}"
 
-# ajput de la methode modifier et la verification de la modification
+# ajput de la methode modifier et la verification de la modification---------------------------
     def modifier_salle(self, salle):
         if not salle.code or not salle.description or not salle.categorie or int(salle.capacite) < 1:
             return False, "Données invalides pour la modification."
@@ -28,9 +28,19 @@ class ServiceSalle:
         except Exception as m:
             return False, f"Erreur : {m}"
 
-#ajout de la methode de suppression
+#ajout de la methode de suppression-------------------------------------------------------
     def supprimer_salle(self, code):
+        if not code:
+            return False, "Code obligatoire"
+
         self.dao_salle.delete_salle(code)
+        return True, "Salle supprimée"
 
+#ajout de la methode de recherche --------------------------------------------
+    def rechercher_salle(self, code):
+        return self.dao_salle.get_salle(code)
 
+#ajout de la methode recuperation de toutes les salles
+    def recuperer_salles(self):
+        return self.dao_salle.get_salles()
 

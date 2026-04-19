@@ -1,4 +1,4 @@
-from data.dao_salle import DataSalle
+"""from data.dao_salle import DataSalle
 from models.salle import Salle
 dao = DataSalle()
 conn = dao.get_connection()
@@ -28,7 +28,30 @@ if s:
 print("\n--- Liste de toutes les salles ---")
 toutes = dao.get_salles()
 for s in toutes:
-    s.afficher_infos()
+    s.afficher_infos() """
+
+#j'ai commenter la premiere partie en haut afin de tester mes fonction que j;ai creer dans services
+from models.salle import Salle
+from services.services_salle import  ServiceSalle
+
+serv= ServiceSalle()
+print("--------test de la couche services pour l'ajout ----------------------")
+s1 = Salle("C303", "Laboratoire Multimédia", "Informatique", 12)
+succes, message = serv.ajouter_salle(s1)
+print(f"Ajout C303 : {message}")
+
+
+print("--------test de la couche services pour rechercher  -----------------")
+print("\nRecherche S50 :")
+salle = serv.rechercher_salle("C303")
+if salle:
+    salle.afficher_infos()
+
+print("--------test de la couche services pour modifier  -------------------")
+serv.categorie = "Biologie"
+success, message = serv.modifier_salle(serv)
+print(message)
+
 
 
 
