@@ -74,6 +74,14 @@ class ViewSalle(ctk.CTk):
         self.btn_ajouter.configure(command=self.rechercher_salle)
         self.btn_rechercher.grid(row=0, column=3, padx=10, pady=10)
 
+        self.lister_salles()
+
+    def lister_salles(self):
+        self.treeList.delete(*self.treeList.get_children())
+        liste = self.service_salle.recuperer_salles()
+        for s in liste:
+            self.treeList.insert("", "end", values=(s.code, s.description, s.categorie, s.capacite))
+
 #assosciation des boutons avec command=
         # fonction ajouter --------------------------------------------------------------------------
     def ajouter_salle(self):
@@ -90,6 +98,8 @@ class ViewSalle(ctk.CTk):
 
         success, message = self.service_salle.ajouter_salle(salle)
         print(message)
+        if success:
+            self.lister_salles()
 
         #fonction modifier
     def modifier_salle(self):
@@ -106,14 +116,19 @@ class ViewSalle(ctk.CTk):
 
         success, message = self.service_salle.modifier_salle(salle)
         print(message)
+        if success:
+            self.lister_salles()
+
         #fonction supprimer -----------------------------------------------------------
     def supprimer_salle(self):
         code = self.entry_code.get()
 
         success, message = self.service_salle.supprimer_salle(code)
         print(message)
+        if success:
+            self.lister_salles()
 
-        #fonction rechercher
+        #fonction rechercher-----------------------------------------------------------------
     def rechercher_salle(self):
         code = self.entry_code.get()
 
