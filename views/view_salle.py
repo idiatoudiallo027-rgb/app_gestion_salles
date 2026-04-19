@@ -76,3 +76,11 @@ class ViewSalle(ctk.CTk):
 
             success, message = self.service_salle.modifier_salle(salle)
             print(message)
+        #fonction supprimer -----------------------------------------------------------
+        def supprimer_salle(self):
+            code = self.entry_code.get()
+
+            success, message = self.service_salle.supprimer_salle(code)
+            print(message)
+
+        #fonction rechercher
