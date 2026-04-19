@@ -42,16 +42,22 @@ print(f"Ajout C303 : {message}")
 
 
 print("--------test de la couche services pour rechercher  -----------------")
-print("\nRecherche S50 :")
+print("\nRecherche C303 :")
 salle = serv.rechercher_salle("C303")
 if salle:
     salle.afficher_infos()
 
 print("--------test de la couche services pour modifier  -------------------")
-serv.categorie = "Biologie"
-success, message = serv.modifier_salle(serv)
-print(message)
+s = serv.rechercher_salle("C303")
 
+if s:
+    s.categorie = "Biologie"
+    success, message = serv.modifier_salle(s)
+    print(message)
 
+print("--------test de la couche services pour afficher   -------------------")
+print("\nListe des salles :")
+for salle in serv.recuperer_salles():
+    salle.afficher_infos()
 
 
