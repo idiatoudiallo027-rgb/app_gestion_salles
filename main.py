@@ -31,7 +31,7 @@ for s in toutes:
     s.afficher_infos() """
 
 #j'ai commenter la premiere partie en haut afin de tester mes fonction que j;ai creer dans services
-from models.salle import Salle
+"""from models.salle import Salle
 from services.services_salle import  ServiceSalle
 
 serv= ServiceSalle()
@@ -62,4 +62,10 @@ for salle in serv.recuperer_salles():
 
 print("--------test de la couche services pour supprimer   -------------------")
 serv.supprimer_salle("C303")
-print("\nSalle C303 supprimée avec succes")
+print("\nSalle C303 supprimée avec succes")"""
+
+
+#la vue de l'application
+from views.view_salle import ViewSalle
+app = ViewSalle()
+app.mainloop()
