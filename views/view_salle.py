@@ -32,16 +32,16 @@ class ViewSalle(ctk.CTk):
         self.frame_actions.pack(pady=10)
 
 # Boutons (SANS command= pour l'instant)
-        self.btn_ajouter = ctk.CTkButton(self.frame_actions, text="Ajouter")
+        self.btn_ajouter = ctk.CTkButton(self.frame_actions, text="Ajouter", fg_color="green")
         self.btn_ajouter.pack(side="left", padx=5)
 
-        self.btn_modifier = ctk.CTkButton(self.frame_actions, text="Modifier")
+        self.btn_modifier = ctk.CTkButton(self.frame_actions, text="Modifier", fg_color="orange")
         self.btn_modifier.pack(side="left", padx=5)
 
-        self.btn_supprimer = ctk.CTkButton(self.frame_actions, text="Supprimer")
+        self.btn_supprimer = ctk.CTkButton(self.frame_actions, text="Supprimer", fg_color="red")
         self.btn_supprimer.pack(side="left", padx=5)
 
-        self.btn_rechercher = ctk.CTkButton(self.frame_actions, text="Rechercher")
+        self.btn_rechercher = ctk.CTkButton(self.frame_actions, text="Rechercher",fg_color="blue")
         self.btn_rechercher.pack(side="left", padx=5)
 
 #assosciation des boutons avec command=
@@ -84,3 +84,19 @@ class ViewSalle(ctk.CTk):
             print(message)
 
         #fonction rechercher
+        def rechercher_salle(self):
+            code = self.entry_code.get()
+
+            salle = self.service_salle.rechercher_salle(code)
+
+            if salle:
+                self.entry_description.delete(0, "end")
+                self.entry_description.insert(0, salle.description)
+
+                self.entry_categorie.delete(0, "end")
+                self.entry_categorie.insert(0, salle.categorie)
+
+                self.entry_capacite.delete(0, "end")
+                self.entry_capacite.insert(0, salle.capacite)
+            else:
+                print("Salle introuvable")
