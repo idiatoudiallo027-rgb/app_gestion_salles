@@ -28,5 +28,9 @@ class ServiceSalle:
         except Exception as m:
             return False, f"Erreur : {m}"
 
+#ajout de la methode de suppression
+    def supprimer_salle(self, code):
+        self.dao_salle.delete_salle(code)
+
 
 
