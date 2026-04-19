@@ -43,3 +43,21 @@ class ViewSalle(ctk.CTk):
 
         self.btn_rechercher = ctk.CTkButton(self.frame_actions, text="Rechercher")
         self.btn_rechercher.pack(side="left", padx=5)
+
+#assosciation des boutons avec command=
+        # fonction ajouter --------------------------------------------------------------------------
+        def ajouter_salle(self):
+            code = self.entry_code.get()
+            description = self.entry_description.get()
+            categorie = self.entry_categorie.get()
+            capacite = self.entry_capacite.get()
+
+            if not capacite.isdigit():
+                print("Capacité invalide")
+                return
+
+            salle = Salle(code, description, categorie, int(capacite))
+
+            success, message = self.service_salle.ajouter_salle(salle)
+            print(message)
+
