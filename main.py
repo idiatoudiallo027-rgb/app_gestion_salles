@@ -60,4 +60,6 @@ print("\nListe des salles :")
 for salle in serv.recuperer_salles():
     salle.afficher_infos()
 
-
+print("--------test de la couche services pour supprimer   -------------------")
+serv.supprimer_salle("C303")
+print("\nSalle C303 supprimée avec succes")
