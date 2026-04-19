@@ -1,7 +1,5 @@
 import json
 import mysql.connector
-
-from models import salle
 from models.salle import Salle
 
 class DataSalle:

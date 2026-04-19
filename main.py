@@ -34,6 +34,7 @@ for s in toutes:
 """from models.salle import Salle
 from services.services_salle import  ServiceSalle
 
+
 serv= ServiceSalle()
 print("--------test de la couche services pour l'ajout ----------------------")
 s1 = Salle("C303", "Laboratoire Multimédia", "Informatique", 12)
@@ -64,8 +65,8 @@ print("--------test de la couche services pour supprimer   -------------------")
 serv.supprimer_salle("C303")
 print("\nSalle C303 supprimée avec succes")"""
 
-
-#la vue de l'application
+#partie view
 from views.view_salle import ViewSalle
 app = ViewSalle()
 app.mainloop()
+

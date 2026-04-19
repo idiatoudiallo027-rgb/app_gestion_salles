@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from services.services_salle import ServiceSalle
 from models.salle import Salle
 
@@ -7,9 +7,10 @@ from models.salle import Salle
 class ViewSalle(ctk.CTk):
     def __init__(self):
         super().__init__()
+        self.service_salle = ServiceSalle()
         self.title("GESTION DES SALLES ")
         self.geometry("800x600")
-        self.services_salle = ServiceSalle()
+
 
 #creation du Cadre Infos ainsi que les labels et entry-------------------------------------------------
         self.frame_infos = ctk.CTkFrame(self)
@@ -22,10 +23,10 @@ class ViewSalle(ctk.CTk):
         self.entry_description = ctk.CTkEntry(self.frame_infos, placeholder_text="Description")
         self.entry_description.pack(pady=5)
 
-        self.entry_categorie = ctk.CTkEntry(self.frame_infos, placeholder_text="Catégorie")
+        self.entry_categorie = ctk.CTkEntry(self.frame_infos, placeholder_text="Categorie")
         self.entry_categorie.pack(pady=5)
 
-        self.entry_capacite = ctk.CTkEntry(self.frame_infos, placeholder_text="Capacité")
+        self.entry_capacite = ctk.CTkEntry(self.frame_infos, placeholder_text="Capacite")
         self.entry_capacite.pack(pady=5)
 
 # le Cadre des  Actions  ------------------------------------------------------------------
@@ -47,7 +48,7 @@ class ViewSalle(ctk.CTk):
         self.treeList.heading("code", text="CODE")
         self.treeList.heading("description", text="Description")
         self.treeList.heading("categorie", text="Catégorie")
-        self.treeList.heading("capacite", text="Capacité")
+        self.treeList.heading("capacite", text="Capacite")
 
         # Largeur colonnes
         self.treeList.column("code", width=80)
@@ -63,85 +64,97 @@ class ViewSalle(ctk.CTk):
         self.btn_ajouter.grid(row=0, column=0, padx=10, pady=10)
 
         self.btn_modifier = ctk.CTkButton(self.frame_actions, text="Modifier", fg_color="orange")
-        self.btn_ajouter.configure(command=self.modifier_salle)
+        self.btn_modifier.configure(command=self.modifier_salle)
         self.btn_modifier.grid(row=0, column=1, padx=10, pady=10)
 
         self.btn_supprimer = ctk.CTkButton(self.frame_actions, text="Supprimer", fg_color="red")
-        self.btn_ajouter.configure(command=self.supprimer_salle)
+        self.btn_supprimer.configure(command=self.supprimer_salle)
         self.btn_supprimer.grid(row=0, column=2, padx=10, pady=10)
 
         self.btn_rechercher = ctk.CTkButton(self.frame_actions, text="Rechercher",fg_color="blue")
-        self.btn_ajouter.configure(command=self.rechercher_salle)
+        self.btn_rechercher.configure(command=self.rechercher_salle)
         self.btn_rechercher.grid(row=0, column=3, padx=10, pady=10)
 
         self.lister_salles()
+
+
+#assosciation des boutons avec command=
+    def vider_champs(self):
+        self.entry_code.delete(0, "end")
+        self.entry_description.delete(0, "end")
+        self.entry_categorie.delete(0, "end")
+        self.entry_capacite.delete(0, "end")
+        # fonction ajouter --------------------------------------------------------------------------
+    def ajouter_salle(self):
+        try:
+            code = self.entry_code.get()
+            description = self.entry_description.get()
+            categorie = self.entry_categorie.get()
+            capacite = int(self.entry_capacite.get())
+            salle = Salle(code, description, categorie, capacite)
+
+            ok, message = self.service_salle.ajouter_salle(salle)
+
+            if ok:
+                messagebox.showinfo("Succès", message)
+                self.vider_champs()
+                self.lister_salles()
+            else:
+                messagebox.showerror("Erreur", message)
+        except ValueError:
+            messagebox.showerror("Erreur", "veuillez saisir un nombre entier .")
+
+
+        #fonction modifier
+    def modifier_salle(self):
+        try:
+            code = self.entry_code.get()
+            description = self.entry_description.get()
+            categorie = self.entry_categorie.get()
+            capacite = int(self.entry_capacite.get())
+            salle = Salle(code, description, categorie, capacite)
+            ok, message = self.service_salle.modifier_salle(salle)
+            if ok:
+                messagebox.showinfo("Succès", message)
+                self.vider_champs()
+                self.lister_salles()
+            else:
+
+                messagebox.showerror("Erreur", message)
+        except ValueError:
+            messagebox.showerror("Erreur", "Veuillez entrer un nombre entier .")
+        #fonction supprimer -----------------------------------------------------------
+    def supprimer_salle(self):
+        code = self.entry_code.get()
+        if not code:
+            messagebox.showerror("Erreur", "saisissez le code de la salle.")
+            return
+        ok, message = self.service_salle.supprimer_salle(code)
+        if ok:
+            messagebox.showinfo("Succès", message)
+            self.vider_champs()
+            self.lister_salles()
+        else:
+            messagebox.showerror("Erreur", message)
+        #fonction rechercher-----------------------------------------------------------------
+    def rechercher_salle(self):
+        code = self.entry_code.get()
+        if not code:
+            messagebox.showerror("Erreur", "Veuillez saisir le code de la salle.")
+            return
+        salle = self.service_salle.rechercher_salle(code)
+        if salle:
+            self.entry_description.delete(0, "end")
+            self.entry_description.insert(0, salle.description)
+            self.entry_categorie.delete(0, "end")
+            self.entry_categorie.insert(0, salle.categorie)
+            self.entry_capacite.delete(0, "end")
+            self.entry_capacite.insert(0, str(salle.capacite))
+        else:
+            messagebox.showerror("Erreur", "Salle introuvable.")
 
     def lister_salles(self):
         self.treeList.delete(*self.treeList.get_children())
         liste = self.service_salle.recuperer_salles()
         for s in liste:
             self.treeList.insert("", "end", values=(s.code, s.description, s.categorie, s.capacite))
-
-#assosciation des boutons avec command=
-        # fonction ajouter --------------------------------------------------------------------------
-    def ajouter_salle(self):
-        code = self.entry_code.get()
-        description = self.entry_description.get()
-        categorie = self.entry_categorie.get()
-        capacite = self.entry_capacite.get()
-
-        if not capacite.isdigit():
-            print("Capacité invalide")
-            return
-
-        salle = Salle(code, description, categorie, int(capacite))
-
-        success, message = self.service_salle.ajouter_salle(salle)
-        print(message)
-        if success:
-            self.lister_salles()
-
-        #fonction modifier
-    def modifier_salle(self):
-        code = self.entry_code.get()
-        description = self.entry_description.get()
-        categorie = self.entry_categorie.get()
-        capacite = self.entry_capacite.get()
-
-        if not capacite.isdigit():
-            print("Capacité invalide")
-            return
-
-        salle = Salle(code, description, categorie, int(capacite))
-
-        success, message = self.service_salle.modifier_salle(salle)
-        print(message)
-        if success:
-            self.lister_salles()
-
-        #fonction supprimer -----------------------------------------------------------
-    def supprimer_salle(self):
-        code = self.entry_code.get()
-
-        success, message = self.service_salle.supprimer_salle(code)
-        print(message)
-        if success:
-            self.lister_salles()
-
-        #fonction rechercher-----------------------------------------------------------------
-    def rechercher_salle(self):
-        code = self.entry_code.get()
-
-        salle = self.service_salle.rechercher_salle(code)
-
-        if salle:
-            self.entry_description.delete(0, "end")
-            self.entry_description.insert(0, salle.description)
-
-            self.entry_categorie.delete(0, "end")
-            self.entry_categorie.insert(0, salle.categorie)
-
-            self.entry_capacite.delete(0, "end")
-            self.entry_capacite.insert(0, salle.capacite)
-        else:
-            print("Salle introuvable")

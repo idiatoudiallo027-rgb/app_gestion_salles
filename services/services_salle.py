@@ -17,7 +17,7 @@ class ServiceSalle:
         except Exception as e:
             return False, f"Erreur base de données : {e}"
 
-# ajput de la methode modifier et la verification de la modification---------------------------
+# ajout de la methode modifier et la verification de la modification---------------------------
     def modifier_salle(self, salle):
         if not salle.code or not salle.description or not salle.categorie or int(salle.capacite) < 1:
             return False, "Données invalides pour la modification."
