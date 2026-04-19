@@ -61,3 +61,18 @@ class ViewSalle(ctk.CTk):
             success, message = self.service_salle.ajouter_salle(salle)
             print(message)
 
+        #fonction modifier
+        def modifier_salle(self):
+            code = self.entry_code.get()
+            description = self.entry_description.get()
+            categorie = self.entry_categorie.get()
+            capacite = self.entry_capacite.get()
+
+            if not capacite.isdigit():
+                print("Capacité invalide")
+                return
+
+            salle = Salle(code, description, categorie, int(capacite))
+
+            success, message = self.service_salle.modifier_salle(salle)
+            print(message)
