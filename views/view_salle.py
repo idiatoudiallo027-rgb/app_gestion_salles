@@ -43,13 +43,13 @@ class ViewSalle(ctk.CTk):
             show="headings"
         )
 
-        # En-têtes-----
+# En-têtes----------------------------------
         self.treeList.heading("code", text="CODE")
         self.treeList.heading("description", text="Description")
         self.treeList.heading("categorie", text="Catégorie")
         self.treeList.heading("capacite", text="Capacite")
 
-        # la dimension des colonnes
+# la dimension des colonnes------------------------------------------
         self.treeList.column("code", width=80,)
         self.treeList.column("description", width=150)
         self.treeList.column("categorie", width=120)

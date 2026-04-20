@@ -56,6 +56,7 @@ class DataSalle:
 
         conn.commit()
         conn.close()
+
 #rechercher et retourner une salle a partir de son code -----------------------------------------
     def get_salle(self, code):
         conn = self.get_connection()
@@ -70,7 +71,7 @@ class DataSalle:
             return Salle(r['code'], r['description'], r['categorie'], r['capacite'])
         return None
 
-#recuperer toutes les salles presentent dans la base de donnee --------------------------------------
+#recuperer toutes les salles presentes dans la base de donnee --------------------------------------
     def get_salles(self):
         conn = self.get_connection()
         cursor = conn.cursor(dictionary=True)
